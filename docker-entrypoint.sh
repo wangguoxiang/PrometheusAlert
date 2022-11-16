@@ -23,4 +23,4 @@ if env | grep -q '^PA_.\+=.\+'; then
     done
 fi
 
-exec /app/PrometheusAlert
+exec /app/prometheusalert2

@@ -1,6 +1,6 @@
 FROM golang:1.16-alpine3.12 as builder
 
-WORKDIR $GOPATH/src/github.com/feiyu563/PrometheusAlert
+WORKDIR /feiyu563/PrometheusAlert
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
     apk update && apk upgrade && \
@@ -10,14 +10,14 @@ ENV GO111MODULE on
 
 ENV GOPROXY https://goproxy.io
 
-COPY . $GOPATH/src/github.com/feiyu563/PrometheusAlert
+COPY . /feiyu563/PrometheusAlert 
 
 RUN make build
 
 # -----------------------------------------------------------------------------
 FROM alpine:3.12
 
-LABEL maintainer="jikun.zhang"
+LABEL maintainer="guoxiang.wang"
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
     apk add tzdata && \
@@ -31,7 +31,7 @@ HEALTHCHECK --start-period=10s --interval=20s --timeout=3s --retries=3 \
 
 WORKDIR /app
 
-COPY --from=builder /go/src/github.com/feiyu563/PrometheusAlert/PrometheusAlert .
+COPY --from=builder /feiyu563/PrometheusAlert/prometheusalert2 .
 
 COPY db/PrometheusAlertDB.db /opt/PrometheusAlertDB.db
 
