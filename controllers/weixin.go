@@ -25,7 +25,7 @@ type WXMessage struct {
 
 type WXTxtMessage struct {
 	Msgtype string            `json:"msgtype"`
-	BText   workwxbot.BotText `json:"BotText"`
+	BotText workwxbot.BotText `json:"BotText"`
 }
 
 func PostToWeiXin(text, WXurl, atuserid, logsign string) string {
@@ -57,7 +57,7 @@ func PostToWeiXin(text, WXurl, atuserid, logsign string) string {
 	} else if mode == "1" {
 		u := WXTxtMessage{
 			Msgtype: "text",
-			BText: workwxbot.BotText{
+			BotText: workwxbot.BotText{
 				Content:       SendContent,
 				MentionedList: []string{"@all"},
 			},
