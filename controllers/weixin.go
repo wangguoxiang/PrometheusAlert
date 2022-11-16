@@ -5,20 +5,23 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/logs"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
+	"github.com/ysicing/workwxbot"
 )
 
 type Mark struct {
 	Content string `json:"content"`
 }
 type WXMessage struct {
-	Msgtype  string `json:"msgtype"`
-	Markdown Mark   `json:"markdown"`
+	Msgtype  string            `json:"msgtype"`
+	Markdown Mark              `json:"markdown"`
+	BText    workwxbot.BotText `json:"BotText"`
 }
 
 func PostToWeiXin(text, WXurl, atuserid, logsign string) string {
@@ -28,19 +31,35 @@ func PostToWeiXin(text, WXurl, atuserid, logsign string) string {
 		return "企业微信接口未配置未开启状态,请先配置open-weixin为1"
 	}
 
+	mode := beego.AppConfig.String("wx-mode")
+	var u WXMessage
 	SendContent := text
-	if atuserid != "" {
-		userid := strings.Split(atuserid, ",")
-		idtext := ""
-		for _, id := range userid {
-			idtext += "<@" + id + ">"
+	if mode == "0" {
+		if atuserid != "" {
+			userid := strings.Split(atuserid, ",")
+			idtext := ""
+			for _, id := range userid {
+				idtext += "<@" + id + ">"
+			}
+			SendContent += idtext
 		}
-		SendContent += idtext
+		u = WXMessage{
+			Msgtype:  "markdown",
+			Markdown: Mark{Content: SendContent},
+		}
+	} else if mode == "1" {
+		u = WXMessage{
+			Msgtype: "text",
+			BText: workwxbot.BotText{
+				Content:       SendContent,
+				MentionedList: []string{"@all"},
+			},
+		}
+	} else {
+		logs.Info(logsign, "[weixin]", "企业微信模式不正确,wx-mode只能为0或1")
+		return "企业微信模式不正确"
 	}
-	u := WXMessage{
-		Msgtype:  "markdown",
-		Markdown: Mark{Content: SendContent},
-	}
+
 	b := new(bytes.Buffer)
 	json.NewEncoder(b).Encode(u)
 	logs.Info(logsign, "[weixin]", b)

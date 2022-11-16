@@ -5,14 +5,15 @@ import (
 	"PrometheusAlert/models/elastic"
 	"bytes"
 	"encoding/json"
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/logs"
 	tmplhtml "html/template"
 	"regexp"
 	"strconv"
 	"strings"
 	"text/template"
 	"time"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 )
 
 type PrometheusAlertController struct {
@@ -104,9 +105,9 @@ func (c *PrometheusAlertController) PrometheusAlert() {
 		AliyunAlertJson.Timestamp = c.Input().Get("timestamp")
 		p_json = AliyunAlertJson
 	} else {
-		json.Unmarshal(c.Ctx.Input.RequestBody, &p_json)
+		json.Unmarshal(c.Ctx.Input.RequestBody, p_json)
 		//针对prometheus的消息特殊处理
-		json.Unmarshal(c.Ctx.Input.RequestBody, &p_alertmanager_json)
+		json.Unmarshal(c.Ctx.Input.RequestBody, p_alertmanager_json)
 	}
 
 	pMsg.Type = c.Input().Get("type")
@@ -182,6 +183,7 @@ func (c *PrometheusAlertController) PrometheusAlert() {
 				xalert := AlertValue.(map[string]interface{})
 				//路由处理,可能存在多个路由都匹配成功，所以这里返回的是个列表sMsg
 				Return_pMsgs := AlertRouterSet(xalert, pMsg, PrometheusAlertTpl.Tpl)
+				logs.Debug(logsign, Return_pMsgs)
 				for _, Return_pMsg := range Return_pMsgs {
 					//logs.Debug("当前模版：", Return_pMsg.TplName)
 					//获取渲染后的模版

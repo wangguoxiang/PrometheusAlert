@@ -1,4 +1,4 @@
-pkgs	= $(shell go list ./... | grep -v vendor/)
+go pkgs	= $(shell go list ./... | grep -v vendor/)
 
 DOCKER_IMAGE_NAME ?= feiyu563/prometheus-alert
 
