@@ -19,9 +19,13 @@ type Mark struct {
 	Content string `json:"content"`
 }
 type WXMessage struct {
-	Msgtype  string            `json:"msgtype"`
-	Markdown Mark              `json:"markdown"`
-	BText    workwxbot.BotText `json:"BotText"`
+	Msgtype  string `json:"msgtype"`
+	Markdown Mark   `json:"markdown"`
+}
+
+type WXTxtMessage struct {
+	Msgtype string            `json:"msgtype"`
+	BText   workwxbot.BotText `json:"BotText"`
 }
 
 func PostToWeiXin(text, WXurl, atuserid, logsign string) string {
@@ -32,7 +36,7 @@ func PostToWeiXin(text, WXurl, atuserid, logsign string) string {
 	}
 
 	mode := beego.AppConfig.String("wx-mode")
-	var u WXMessage
+	b := new(bytes.Buffer)
 	SendContent := text
 	if mode == "0" {
 		if atuserid != "" {
@@ -43,25 +47,28 @@ func PostToWeiXin(text, WXurl, atuserid, logsign string) string {
 			}
 			SendContent += idtext
 		}
-		u = WXMessage{
+
+		u := WXMessage{
 			Msgtype:  "markdown",
 			Markdown: Mark{Content: SendContent},
 		}
+
+		json.NewEncoder(b).Encode(u)
 	} else if mode == "1" {
-		u = WXMessage{
+		u := WXTxtMessage{
 			Msgtype: "text",
 			BText: workwxbot.BotText{
 				Content:       SendContent,
 				MentionedList: []string{"@all"},
 			},
 		}
+
+		json.NewEncoder(b).Encode(u)
 	} else {
 		logs.Info(logsign, "[weixin]", "企业微信模式不正确,wx-mode只能为0或1")
 		return "企业微信模式不正确"
 	}
 
-	b := new(bytes.Buffer)
-	json.NewEncoder(b).Encode(u)
 	logs.Info(logsign, "[weixin]", b)
 	var tr *http.Transport
 	if proxyUrl := beego.AppConfig.String("proxy"); proxyUrl != "" {
