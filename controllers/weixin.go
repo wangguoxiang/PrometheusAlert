@@ -25,7 +25,7 @@ type WXMessage struct {
 
 type WXTxtMessage struct {
 	Msgtype string            `json:"msgtype"`
-	BotText workwxbot.BotText `json:"BotText"`
+	BotText workwxbot.BotText `json:"text"`
 }
 
 func PostToWeiXin(text, WXurl, atuserid, logsign string) string {
@@ -55,11 +55,22 @@ func PostToWeiXin(text, WXurl, atuserid, logsign string) string {
 
 		json.NewEncoder(b).Encode(u)
 	} else if mode == "1" {
+		var userlist []string
+		if atuserid != "" {
+			userid := strings.Split(atuserid, ",")
+			for _, id := range userid {
+				userlist = append(userlist, "@"+id)
+			}
+			if len(userlist) <= 0 {
+				userlist = []string{"@all"}
+			}
+		}
+
 		u := WXTxtMessage{
 			Msgtype: "text",
 			BotText: workwxbot.BotText{
 				Content:       SendContent,
-				MentionedList: []string{"@all"},
+				MentionedList: userlist,
 			},
 		}
 
@@ -85,6 +96,7 @@ func PostToWeiXin(text, WXurl, atuserid, logsign string) string {
 		}
 	}
 	client := &http.Client{Transport: tr}
+	logs.Info(logsign, "[weixin]", &b)
 	res, err := client.Post(WXurl, "application/json", b)
 	if err != nil {
 		logs.Error(logsign, "[weixin]", err.Error())
