@@ -19,3 +19,7 @@ import (
 type CheckerController struct {
 	beego.Controller
 }
+
+func (c *PrometheusAlertController) CheckerController() {
+
+}
