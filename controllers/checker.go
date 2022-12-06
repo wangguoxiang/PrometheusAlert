@@ -20,6 +20,6 @@ type CheckerController struct {
 	beego.Controller
 }
 
-func (c *CheckerController) CheckerController() {
+func (c *CheckerController) CheckerDns() {
 	c.ServeJSON()
 }
