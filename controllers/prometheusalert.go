@@ -150,7 +150,7 @@ func (c *PrometheusAlertController) PrometheusAlert() {
 		pMsg.GroupId = beego.AppConfig.String("BDRL_ID")
 	}
 	pMsg.AtSomeOne = c.Input().Get("at")
-        logs.Debug(logsign, c.Input())
+	logs.Debug(logsign, c.Input())
 	pMsg.RoundRobin = c.Input().Get("rr")
 	//该配置仅适用于alertmanager的消息,用于判断是否需要拆分alertmanager告警消息
 	pMsg.Split = c.Input().Get("split")
@@ -184,7 +184,7 @@ func (c *PrometheusAlertController) PrometheusAlert() {
 				xalert := AlertValue.(map[string]interface{})
 				//路由处理,可能存在多个路由都匹配成功，所以这里返回的是个列表sMsg
 				Return_pMsgs := AlertRouterSet(xalert, pMsg, PrometheusAlertTpl.Tpl)
-                                logs.Debug(logsign, Return_pMsgs)
+				logs.Debug(logsign, Return_pMsgs)
 				for _, Return_pMsg := range Return_pMsgs {
 					//logs.Debug("当前模版：", Return_pMsg.TplName)
 					//获取渲染后的模版
@@ -416,17 +416,18 @@ func TransformAlertMessage(p_json interface{}, tpltext string) (error error, msg
 		},
 	}
 
+	beego.Debug("tpltxt:", tpltext)
 	buf := new(bytes.Buffer)
 	tpl, err := template.New("").Funcs(funcMap).Parse(tpltext)
 	if err != nil {
 		return err, ""
 	}
-
+	beego.Debug("p_json:", p_json)
 	err = tpl.Execute(buf, p_json)
 	if err != nil {
 		return err, ""
 	}
-
+	beego.Debug("template out:", buf.String())
 	return nil, buf.String()
 }
 
@@ -436,7 +437,7 @@ func SendMessagePrometheusAlert(message string, pmsg *PrometheusAlertMsg, logsig
 	var ReturnMsg string
 	models.AlertsFromCounter.WithLabelValues("/prometheusalert").Add(1)
 	ChartsJson.Prometheusalert += 1
-        logs.Debug(logsign, pmsg)
+	logs.Debug(logsign, pmsg)
 	switch pmsg.Type {
 	//微信渠道
 	case "wx":

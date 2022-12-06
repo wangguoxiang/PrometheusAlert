@@ -47,6 +47,9 @@ func init() {
 	//webhook
 	beego.Router("/prometheusalert", &controllers.PrometheusAlertController{}, "get,post:PrometheusAlert")
 
+	//
+	beego.Router("/checkerdns", &controllers.CheckerController{}, "get,post:PrometheusAlert")
+
 	// gitlab
 	beego.Router("/gitlab/weixin", &controllers.GitlabController{}, "post:GitlabWeixin")
 	beego.Router("/gitlab/dingding", &controllers.GitlabController{}, "post:GitlabDingding")

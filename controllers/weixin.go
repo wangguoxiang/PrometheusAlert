@@ -57,7 +57,7 @@ func PostToWeiXin(text, WXurl, atuserid, logsign string) string {
 	} else if mode == "1" {
 		var userlist []string
 		if atuserid != "" {
-			userid := strings.Split(atuserid, ",")
+			userid := strings.Split(atuserid, ","
 			for _, id := range userid {
 				userlist = append(userlist, "@"+id)
 			}
