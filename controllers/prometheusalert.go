@@ -5,6 +5,7 @@ import (
 	"PrometheusAlert/models/elastic"
 	"bytes"
 	"encoding/json"
+	"fmt"
 	tmplhtml "html/template"
 	"regexp"
 	"strconv"
