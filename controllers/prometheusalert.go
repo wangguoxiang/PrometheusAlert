@@ -106,7 +106,7 @@ func (c *PrometheusAlertController) PrometheusAlert() {
 		p_json = AliyunAlertJson
 	} else {
 		json.Unmarshal(c.Ctx.Input.RequestBody, p_json)
-		logs.Error(logsign,string(p_json))
+		logs.Error(logsign, string(p_json))
 		//针对prometheus的消息特殊处理
 		json.Unmarshal(c.Ctx.Input.RequestBody, p_alertmanager_json)
 		logs.Error(logsign, string(p_alertmanager_json))
@@ -424,19 +424,18 @@ func TransformAlertMessage(p_json interface{}, tpltext string) (error error, msg
 	if err != nil {
 		return err, ""
 	}
-	
-	switch v := p_json.(type){
-		case int:
-                fmt.Println("int:", v)
-        case string:
-                fmt.Println("string:", v)
-        case []string: 
-       	        fmt.Println("[]string:", &v)
-        default:
-                fmt.Println("unknown type:", v)
-        }
+
+	switch v := p_json.(type) {
+	case int:
+		fmt.Println("int:", v)
+	case string:
+		fmt.Println("string:", v)
+	case []string:
+		fmt.Println("[]string:", &v)
+	default:
+		fmt.Println("unknown type:", v)
 	}
-	
+
 	beego.Debug("p_json:", p_json)
 	err = tpl.Execute(buf, p_json)
 	if err != nil {
