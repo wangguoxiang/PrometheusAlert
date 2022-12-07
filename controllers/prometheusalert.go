@@ -424,25 +424,18 @@ func TransformAlertMessage(p_json interface{}, tpltext string) (error error, msg
 		return err, ""
 	}
 
+	var t_json interface{}
 	switch v := p_json.(type) {
-	case int:
-		fmt.Println("int:", v)
-	case string:
-		fmt.Println("string:", v)
-	case []string:
-		fmt.Println("[]string:", v)
-	case []byte:
-		fmt.Println("[]byte:", v)
-	case *interface{}:
-		fmt.Println("*interface:", v)
 	case []interface{}:
-		fmt.Println("[]interface:", v[0])
+		t_json = v[0]
+		fmt.Println("[]interface{}:", t_json)
 	default:
-		fmt.Println("unknown type:", v)
+		t_json = v
+		fmt.Println("unknown type:", t_json)
 	}
 
-	beego.Debug("p_json:", p_json)
-	err = tpl.Execute(buf, p_json)
+	beego.Debug("t_json:", t_json)
+	err = tpl.Execute(buf, t_json)
 	if err != nil {
 		return err, ""
 	}
