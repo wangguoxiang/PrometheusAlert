@@ -433,8 +433,8 @@ func TransformAlertMessage(p_json interface{}, tpltext string) (error error, msg
 		fmt.Println("[]string:", v)
 	case []byte:
 		fmt.Println("[]byte:", v)
-    case []map:
-    	fmt.Println("[]map:", v)
+	case *interface{}:
+		fmt.Println("*interface:", v)
 	default:
 		fmt.Println("unknown type:", v)
 	}
