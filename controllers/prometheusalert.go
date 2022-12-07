@@ -5,7 +5,6 @@ import (
 	"PrometheusAlert/models/elastic"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	tmplhtml "html/template"
 	"regexp"
 	"strconv"
@@ -428,10 +427,8 @@ func TransformAlertMessage(p_json interface{}, tpltext string) (error error, msg
 	switch v := p_json.(type) {
 	case []interface{}:
 		t_json = v[0]
-		fmt.Println("[]interface{}:", t_json)
 	default:
 		t_json = v
-		fmt.Println("unknown type:", t_json)
 	}
 
 	beego.Debug("t_json:", t_json)
