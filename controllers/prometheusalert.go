@@ -107,10 +107,8 @@ func (c *PrometheusAlertController) PrometheusAlert() {
 		p_json = AliyunAlertJson
 	} else {
 		json.Unmarshal(c.Ctx.Input.RequestBody, p_json)
-		logs.Error(logsign, string(p_json))
 		//针对prometheus的消息特殊处理
 		json.Unmarshal(c.Ctx.Input.RequestBody, p_alertmanager_json)
-		logs.Error(logsign, string(p_alertmanager_json))
 	}
 
 	pMsg.Type = c.Input().Get("type")
