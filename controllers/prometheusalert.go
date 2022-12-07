@@ -442,7 +442,7 @@ func TransformAlertMessage(p_json interface{}, tpltext string) (error error, msg
 	if err != nil {
 		return err, ""
 	}
-	beego.Debug("template out:", buf.String()n)
+	beego.Debug("template out:", buf.String())
 	return nil, buf.String()
 }
 
