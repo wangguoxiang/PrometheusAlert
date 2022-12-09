@@ -14,7 +14,8 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"net"
-	"net/http"
+
+	//"net/http"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
@@ -27,7 +28,7 @@ type CheckerController struct {
 
 type Domaininfo struct {
 	Host        string `json:"host"`
-	Domain      string `json:"domain"`
+	Domain      []byte `json:"domain"`
 	Before_time int64  `json:"before_time"`
 	After_time  int64  `json:"after_time"`
 }
@@ -40,7 +41,7 @@ func (c *CheckerController) CheckerDomain() {
 
 	domaininfo := Domaininfo{
 		Host:        "0.0.0.0",
-		Domain:      domain,
+		Domain:      []byte(domain),
 		Before_time: 0,
 		After_time:  0,
 	}
