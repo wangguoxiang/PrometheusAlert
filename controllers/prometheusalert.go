@@ -416,7 +416,7 @@ func TransformAlertMessage(p_json interface{}, tpltext string) (error error, msg
 		},
 	}
 
-	beego.Debug("tpltxt:", tpltext)
+	//beego.Debug("tpltxt:", tpltext)
 	buf := new(bytes.Buffer)
 	tpl, err := template.New("").Funcs(funcMap).Parse(tpltext)
 	if err != nil {
@@ -431,12 +431,12 @@ func TransformAlertMessage(p_json interface{}, tpltext string) (error error, msg
 		t_json = v
 	}
 
-	beego.Debug("t_json:", t_json)
+	//beego.Debug("t_json:", t_json)
 	err = tpl.Execute(buf, t_json)
 	if err != nil {
 		return err, ""
 	}
-	beego.Debug("template out:", buf.String())
+	//beego.Debug("template out:", buf.String())
 	return nil, buf.String()
 }
 
