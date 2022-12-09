@@ -56,7 +56,7 @@ func (c *CheckerController) CheckerDomain() {
 			c.Data["json"] = domaininfo
 			return
 		}
-		conn, errs := openssl.Dial("tcp", domaininfo.Domain+":443", ctx, 0)
+		conn, errs := openssl.Dial("tcp", string(domaininfo.Domain[:])+":443", ctx, 0)
 
 		if errs != nil {
 			//log.Fatal(errs)
