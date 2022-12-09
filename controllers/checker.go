@@ -25,7 +25,7 @@ type CheckerController struct {
 
 type Domaininfo struct {
 	Host        string `json:"host"`
-	Domain      []byte `json:"domain"`
+	Domain      string `json:"domain"`
 	Before_time int64  `json:"before_time"`
 	After_time  int64  `json:"after_time"`
 }
@@ -50,7 +50,7 @@ func (c *CheckerController) CheckerDomain() {
 			//body.SetStatus(http.StatusInternalServerError, err.Error(), nil, nil, 0)
 			panic(err)
 			logs.Error(logsign, err.Error())
-			c.JSON(http.StatusInternalServerError, domaininfo)
+			c.Data["json"] = domaininfo
 			return
 		}
 		conn, errs := openssl.Dial("tcp", domaininfo.DnsName+":443", ctx, 0)
@@ -60,7 +60,7 @@ func (c *CheckerController) CheckerDomain() {
 			//body.SetStatus(http.StatusInternalServerError, "网络连接错误:"+errs.Error(), nil, nil, 0)
 			panic(errs)
 			logs.Error(logsign, err.Error())
-			c.JSON(http.StatusInternalServerError, domaininfo)
+			c.Data["json"] = domaininfo
 			return
 		}
 		defer conn.Close()
@@ -78,6 +78,7 @@ func (c *CheckerController) CheckerDomain() {
 				domaininfo.Before_time = bt
 				domaininfo.After_time = at
 				logs.Error(logsign, "success")
+				c.Data["json"] = domaininfo
 				//body.SetStatus(http.StatusOK, "请求成功！", domaininfo, nil, 0)
 			} else {
 				//body.SetStatus(http.StatusOK, "错误:"+err.Error(), nil, nil, 0)
@@ -87,8 +88,7 @@ func (c *CheckerController) CheckerDomain() {
 
 	}
 
-	c.JSON(http.StatusInternalServerError, domaininfo)
-	//c.ServeJSON()
+	c.ServeJSON()
 }
 
 func (c *CheckerController) WXSend() {
