@@ -4,7 +4,7 @@ WORKDIR /feiyu563/PrometheusAlert
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
     apk update && apk upgrade && \
-    apk add --no-cache gcc g++ sqlite-libs make git
+    apk add --no-cache gcc g++ sqlite-libs make git pkgconfig openssl-dev 
 
 ENV GO111MODULE on
 
