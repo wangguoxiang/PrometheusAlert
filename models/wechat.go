@@ -98,7 +98,7 @@ func initQiYeWechat() {
 		Touser:     "",
 		Toparty:    "",
 		Totag:      "",
-		Msgtype:    "",
+		Msgtype:    "text",
 		AgentId:    0,
 		Text:       map[string]string{},
 		Safe:       0,
