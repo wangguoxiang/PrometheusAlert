@@ -191,7 +191,7 @@ func sendMessage(msg []byte) error {
 	}
 
 	if e.Errcode == 40014 || e.Errcode == 42001 {
-		getToken(&QiYeReqMsg)
+		getToken()
 		return sendMessage(msg)
 	}
 

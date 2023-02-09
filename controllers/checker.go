@@ -4,7 +4,7 @@ import (
 	//"PrometheusAlert/models"
 	//"PrometheusAlert/models/elastic"
 	//"bytes"
-	//"encoding/json"
+	"encoding/json"
 	//tmplhtml "html/template"
 	//"regexp"
 	//"strconv"
@@ -13,6 +13,7 @@ import (
 	//"time"
 	"crypto/x509"
 	"encoding/pem"
+	"fmt"
 	"net"
 
 	//"net/http"
@@ -143,7 +144,7 @@ func GetDnsIp(domain string) (ip string) {
 	return groupip
 }
 
-func WXMessage(c *CheckerController) {
+func (c *CheckerController) WXMessage() {
 
 	logsign := "[" + LogsSign() + "]"
 	logs.Info(logsign, string(c.Ctx.Input.RequestBody))
