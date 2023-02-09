@@ -156,6 +156,7 @@ func (c *CheckerController) WXMessage() {
 	}
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &commsg); err != nil {
 		c.Data["json"] = err.Error()
+		fmt.Println(err.Error())
 	}
 	//json.Unmarshal(c.Ctx.Input.RequestBody, &commsg)
 	fmt.Println(commsg)
