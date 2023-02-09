@@ -149,11 +149,11 @@ func WXMessage(c *CheckerController) {
 	logs.Info(logsign, string(c.Ctx.Input.RequestBody))
 	logs.Info(logsign, c.Data["json"])
 
-	var commsg cmessage.CommonMessage
+	var commsg models.CommonMessage
 	json.Unmarshal(c.Ctx.Input.RequestBody, &commsg)
 	fmt.Println(commsg)
 
-	rsp := cmessage.MessageNotify(&commsg)
+	rsp := models.MessageNotify(&commsg)
 	fmt.Println("stat:", rsp.State.Rc, rsp.State.Msg)
 
 	c.Data["json"] = rsp.State.Msg

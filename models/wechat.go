@@ -1,4 +1,4 @@
-package cmessage
+package models
 
 import (
 	"bytes"
@@ -137,12 +137,12 @@ func MessageNotify(sendmsg *CommonMessage) (resp Resp) {
 	return
 }
 
-func getToken(config *RequestMesage) (err error) {
+func getToken() (err error) {
 
 	corpid := beego.AppConfig.String("CorpId")
 	corpsecret := beego.AppConfig.String("CorpSecret")
 
-	var url string = gettokenurl + config.CorpId + "&corpsecret=" + config.CorpSecret
+	var url string = gettokenurl + corpid + "&corpsecret=" + corpsecret
 	fmt.Println(url)
 	resp, err := http.Get(url)
 	if err != nil {
