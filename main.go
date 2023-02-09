@@ -3,11 +3,12 @@ package main
 import (
 	"PrometheusAlert/models"
 	_ "PrometheusAlert/routers"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/robfig/cron/v3"
 	"os"
 	"path"
 	"runtime"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/robfig/cron/v3"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
@@ -100,6 +101,7 @@ func main() {
 		c.Start()
 	}
 	models.MetricsInit()
+	models.WxInit()
 	beego.Handler("/metrics", promhttp.Handler())
 	beego.Run()
 }

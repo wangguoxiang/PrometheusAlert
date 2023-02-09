@@ -50,6 +50,7 @@ func init() {
 	//
 	beego.Router("/checkerdomain", &controllers.CheckerController{}, "get,post:CheckerDomain")
 	beego.Router("/wxsend", &controllers.CheckerController{}, "get,post:WXSend")
+	beego.Router("/sendmessage", &controllers.CheckerController{}, "get,post:WXMessage")
 
 	// gitlab
 	beego.Router("/gitlab/weixin", &controllers.GitlabController{}, "post:GitlabWeixin")

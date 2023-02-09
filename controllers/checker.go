@@ -16,6 +16,7 @@ import (
 	"net"
 
 	//"net/http"
+	"PrometheusAlert/models"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
@@ -140,4 +141,21 @@ func GetDnsIp(domain string) (ip string) {
 	}
 
 	return groupip
+}
+
+func WXMessage(c *CheckerController) {
+
+	logsign := "[" + LogsSign() + "]"
+	logs.Info(logsign, string(c.Ctx.Input.RequestBody))
+	logs.Info(logsign, c.Data["json"])
+
+	var commsg cmessage.CommonMessage
+	json.Unmarshal(c.Ctx.Input.RequestBody, &commsg)
+	fmt.Println(commsg)
+
+	rsp := cmessage.MessageNotify(&commsg)
+	fmt.Println("stat:", rsp.State.Rc, rsp.State.Msg)
+
+	c.Data["json"] = rsp.State.Msg
+	c.ServeJSON()
 }
