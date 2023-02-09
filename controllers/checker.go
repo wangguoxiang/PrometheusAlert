@@ -145,7 +145,7 @@ func GetDnsIp(domain string) (ip string) {
 }
 
 func (c *CheckerController) WXMessage() {
-	logsign := "[" + LogsSign() + "]"
+	//logsign := "[" + LogsSign() + "]"
 	//logs.Info(logsign, string(c.Ctx.Input.RequestBody))
 
 	commsg := models.CommonMessage{
