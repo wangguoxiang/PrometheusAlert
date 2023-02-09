@@ -145,13 +145,19 @@ func GetDnsIp(domain string) (ip string) {
 }
 
 func (c *CheckerController) WXMessage() {
-
 	logsign := "[" + LogsSign() + "]"
-	logs.Info(logsign, string(c.Ctx.Input.RequestBody))
-	logs.Info(logsign, c.Data["json"])
+	//logs.Info(logsign, string(c.Ctx.Input.RequestBody))
 
-	var commsg models.CommonMessage
-	json.Unmarshal(c.Ctx.Input.RequestBody, &commsg)
+	commsg := models.CommonMessage{
+		Touser: "1",
+		Toparty: "1",
+		AgentId : 4,
+		Text: "1"  
+	}
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &commsg); err != nil {
+		c.Data["json"] = err.Error()
+	}
+	//json.Unmarshal(c.Ctx.Input.RequestBody, &commsg)
 	fmt.Println(commsg)
 
 	rsp := models.MessageNotify(&commsg)
