@@ -149,10 +149,10 @@ func (c *CheckerController) WXMessage() {
 	//logs.Info(logsign, string(c.Ctx.Input.RequestBody))
 
 	commsg := models.CommonMessage{
-		Touser: "1",
+		Touser:  "1",
 		Toparty: "1",
-		AgentId : 4,
-		Text: "1"  
+		AgentId: 4,
+		Text:    "1",
 	}
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &commsg); err != nil {
 		c.Data["json"] = err.Error()
