@@ -3,11 +3,13 @@ package controllers
 import (
 	"PrometheusAlert/models"
 	"bytes"
-	"crypto/tls"
+
+	//"crypto/tls"
 	"encoding/json"
 	"io/ioutil"
-	"net/http"
-	"net/url"
+
+	//"net/http"
+	//"net/url"
 	"strings"
 
 	"github.com/astaxie/beego"
@@ -26,6 +28,28 @@ type WXMessage struct {
 type WXTxtMessage struct {
 	Msgtype string            `json:"msgtype"`
 	BotText workwxbot.BotText `json:"text"`
+}
+
+var client *http.Client
+
+func init() {
+	var tr *http.Transport
+	maxIdleConns, _ := beego.AppConfig.Int("MaxIdleConns")
+	tr = &http.Transport{MaxIdleConns: maxIdleConns}
+	if proxyUrl := beego.AppConfig.String("proxy"); proxyUrl != "" {
+		proxy := func(_ *http.Request) (*url.URL, error) {
+			return url.Parse(proxyUrl)
+		}
+		tr = &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+			Proxy:           proxy,
+		}
+	} else {
+		tr = &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+	}
+	client = &http.Client{Transport: tr}
 }
 
 func PostToWeiXin(text, WXurl, atuserid, logsign string) string {
