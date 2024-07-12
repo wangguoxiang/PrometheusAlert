@@ -8,7 +8,7 @@ import (
 	//tmplhtml "html/template"
 	//"regexp"
 	//"strconv"
-	//"strings"
+	"strings"
 	//"text/template"
 	//"time"
 	"crypto/x509"

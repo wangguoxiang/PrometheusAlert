@@ -35,7 +35,7 @@ COPY --from=builder /feiyu563/PrometheusAlert/prometheusalert2 .
 
 COPY db/PrometheusAlertDB.db /opt/PrometheusAlertDB.db
 
-COPY conf/app-example.conf conf/app.conf
+COPY conf/app.conf conf/app.conf
 
 COPY db db
 

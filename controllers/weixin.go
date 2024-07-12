@@ -4,12 +4,12 @@ import (
 	"PrometheusAlert/models"
 	"bytes"
 
-	//"crypto/tls"
+	"crypto/tls"
 	"encoding/json"
 	"io/ioutil"
 
-	//"net/http"
-	//"net/url"
+	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/astaxie/beego"
