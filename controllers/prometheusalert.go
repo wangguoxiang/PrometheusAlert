@@ -186,7 +186,7 @@ func (c *PrometheusAlertController) PrometheusAlert() {
 				Return_pMsgs := AlertRouterSet(xalert, pMsg, PrometheusAlertTpl.Tpl)
 				logs.Debug(logsign, Return_pMsgs)
 				for _, Return_pMsg := range Return_pMsgs {
-					//logs.Debug("当前模版：", Return_pMsg.TplName)
+					logs.Debug("当前模版：", Return_pMsg.TplName)
 					//获取渲染后的模版
 					err, msg := TransformAlertMessage(p_alertmanager_json, Return_pMsg.Tpl)
 
@@ -196,6 +196,7 @@ func (c *PrometheusAlertController) PrometheusAlert() {
 						message = err.Error()
 					} else {
 						//发送消息
+
 						message = SendMessagePrometheusAlert(msg, &Return_pMsg, logsign)
 					}
 
@@ -204,6 +205,7 @@ func (c *PrometheusAlertController) PrometheusAlert() {
 			}
 		} else {
 			//获取渲染后的模版
+			logs.Debug(logsign, Return_pMsgs)
 			err, msg := TransformAlertMessage(p_json, PrometheusAlertTpl.Tpl)
 			if err != nil {
 				logs.Error(logsign, err.Error())
@@ -446,7 +448,7 @@ func SendMessagePrometheusAlert(message string, pmsg *PrometheusAlertMsg, logsig
 	var ReturnMsg string
 	models.AlertsFromCounter.WithLabelValues("/prometheusalert").Add(1)
 	ChartsJson.Prometheusalert += 1
-	logs.Debug(logsign, pmsg)
+	logs.Debug(logsign, pmsg, message)
 	switch pmsg.Type {
 	//微信渠道
 	case "wx":

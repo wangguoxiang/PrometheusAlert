@@ -81,22 +81,23 @@ func PostToWeiXin(text, WXurl, atuserid, logsign string) string {
 	}
 
 	logs.Info(logsign, "[weixin]", b)
-	var tr *http.Transport
-	if proxyUrl := beego.AppConfig.String("proxy"); proxyUrl != "" {
-		proxy := func(_ *http.Request) (*url.URL, error) {
-			return url.Parse(proxyUrl)
-		}
-		tr = &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-			Proxy:           proxy,
-		}
-	} else {
-		tr = &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		}
-	}
-	client := &http.Client{Transport: tr}
-	logs.Info(logsign, "[weixin]", &b)
+
+	// var tr *http.Transport
+	// if proxyUrl := beego.AppConfig.String("proxy"); proxyUrl != "" {
+	// 	proxy := func(_ *http.Request) (*url.URL, error) {
+	// 		return url.Parse(proxyUrl)
+	// 	}
+	// 	tr = &http.Transport{
+	// 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	// 		Proxy:           proxy,
+	// 	}
+	// } else {
+	// 	tr = &http.Transport{
+	// 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	// 	}
+	// }
+	// client := &http.Client{Transport: tr}
+	//logs.Info(logsign, "[weixin]", &b)
 	res, err := client.Post(WXurl, "application/json", b)
 	if err != nil {
 		logs.Error(logsign, "[weixin]", err.Error())
